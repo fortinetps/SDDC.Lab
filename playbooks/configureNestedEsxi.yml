@@ -102,7 +102,7 @@
         username: "{{ Nested_vCenter.User }}"
         password: "{{ Nested_vCenter.Password }}"
         validate_certs: false
-        esxi_hostname: "{{ item.value.FQDN }}"      
+        esxi_hostname: "{{ item.value.FQDN | lower }}"      
         datastore_name: "{{ Common.NFS.Datastore }}"
         datastore_type: "{{ Common.NFS.Type }}"
         nfs_server: "{{ Common.NFS.Server.IPv4 }}"
