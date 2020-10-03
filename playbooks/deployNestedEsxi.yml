@@ -67,7 +67,54 @@
       when:
         - DEBUG.DisplayVariables == true
 
-    - name: Deploy nested ESXi hosts
+    - name: Deploy nested ESXi hosts (without vSAN)
+      vmware_guest:
+        hostname: "{{ Target.FQDN }}"
+        username: "{{ Target.User }}"
+        password: "{{ Target.Password }}"
+        validate_certs: false
+        name: "{{ item.value.VMName }}"
+        state: poweredon
+        guest_id: vmkernel65Guest
+        cluster: "{{ Target.Cluster }}"
+        datacenter: "{{ Target.DataCenter }}"
+        folder: "{{ Target.VMFolder }}"
+        disk:
+        - size_gb: "{{ Nested_ESXi.HardwareSettings[item.value.Cluster]['BootDiskSize'] }}"
+          type: "{{ Common.DiskProvisioning }}"
+          datastore: "{{ Target.Datastore }}"
+        hardware:
+          nested_virt: true
+          memory_mb: "{{ Nested_ESXi.HardwareSettings[item.value.Cluster]['Memory'] }}"
+          num_cpus: "{{ Nested_ESXi.HardwareSettings[item.value.Cluster]['CPU'] }}"
+          num_cpu_cores_per_socket: "{{ Nested_ESXi.HardwareSettings[item.value.Cluster]['CoresPerSocket'] }}"
+          scsi: paravirtual
+        networks:
+          - name: "{{ Target.PortGroup.Trunk.Name }}"
+            device_type: vmxnet3
+          - name: "{{ Target.PortGroup.Trunk.Name }}"
+            device_type: vmxnet3
+          - name: "{{ Target.PortGroup.Trunk.Name }}"
+            device_type: vmxnet3
+          - name: "{{ Target.PortGroup.Trunk.Name }}"
+            device_type: vmxnet3
+          - name: "{{ Target.PortGroup.Trunk.Name }}"
+            device_type: vmxnet3
+        cdrom:
+          type: "iso"
+          iso_path: "[{{ Target.Datastore }}] {{ Target.ISOFolder }}/{{ Pod.Number }}{{ item.key }}"
+        annotation: | 
+                    {{ Common.Annotation }}
+                    Username: {{ item.value.User }}
+                    Password: {{ item.value.Password }}
+      loop: "{{ Nested_ESXi.Host | dict2items }}"
+      async: 1800
+      poll: 0
+      when:
+        - Nested_Clusters[item.value.Cluster]['DeployHosts'] == true
+        - Deploy.Setting.UsevSAN|default(true) == false
+
+    - name: Deploy nested ESXi hosts (with vSAN)
       vmware_guest:
         hostname: "{{ Target.FQDN }}"
         username: "{{ Target.User }}"
@@ -118,5 +165,7 @@
       poll: 0
       when:
         - Nested_Clusters[item.value.Cluster]['DeployHosts'] == true
+        - Deploy.Setting.UsevSAN|default(true)
+
 
   tags: nestedESX

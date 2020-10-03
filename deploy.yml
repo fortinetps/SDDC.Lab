@@ -36,6 +36,8 @@
 - import_playbook: playbooks/configureNestedEsxi.yml
 - import_playbook: playbooks/createVds.yml
 - import_playbook: playbooks/configureVsan.yml
+  when:
+    - Deploy.Setting.UsevSAN|default(true)
 - import_playbook: playbooks/license_vSphere.yml
 
 
