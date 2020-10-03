@@ -4,3 +4,4 @@ license.yml
 config.yml
 software.yml
 templates.yml
+**/software
