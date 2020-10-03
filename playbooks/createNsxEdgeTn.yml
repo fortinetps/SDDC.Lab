@@ -227,6 +227,39 @@
         - Deploy.Product.NSXT.Edge == true
         - var_EdgeTransportNodes != ""
 
+    - name: Wait 10 minutes for the NSX-T Edge node boot
+      pause: minutes=10
+      when: 
+        - Deploy.Product.NSXT.LocalManager == true
+        - Deploy.Product.NSXT.Edge == true
+        - var_EdgeTransportNodes != ""
+
+    # http://www.virtuallyphysical.co.uk/2020/05/14/configuring-nsx-t-3-x-edge-nodes-to-run-on-older-amd-cpus
+    # https://www.virtuallyghetto.com/2020/05/configure-nsx-t-edge-to-run-on-amd-ryzen-cpu.html#more-168208
+    - name: SSH to NSX-T Edge node to update config.py script and make it AMD Ryzen compatible
+      expect:
+        command: ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -l root {{ item.node_deployment_info.deployment_config.vm_deployment_config.hostname }}
+        responses:
+          "assword: ": 
+            - "{{ Nested_NSXT.Credential.admin.Password }}"
+          ":~# ": 
+            - cp /opt/vmware/nsx-edge/bin/config.py /opt/vmware/nsx-edge/bin/config.py.bak
+            - sed -e '1{x;$!d}' -e '/./{H;$!d;}' -e 'x;/if "AMD EPYC "/ s/\n/\n#/g;' -i /opt/vmware/nsx-edge/bin/config.py
+            - sync
+            - reboot
+        echo: yes
+      ignore_errors: true
+      loop: "{{ var_EdgeTransportNodes }}"
+      delegate_to: localhost
+      register: expect_output
+
+    - name: Wait 5 minutes for the NSX-T Edge node reboot
+      pause: minutes=5
+      when: 
+        - Deploy.Product.NSXT.LocalManager == true
+        - Deploy.Product.NSXT.Edge == true
+        - var_EdgeTransportNodes != ""
+
     - name: Wait until the NSX-T API reports that no Edge Transport Nodes are in "PENDING" state
       uri:
         url: https://{{ Nested_NSXT.Components.LocalManager.FQDN }}/api/v1/transport-nodes/state?status=PENDING
