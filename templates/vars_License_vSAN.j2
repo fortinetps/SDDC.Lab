@@ -43,7 +43,7 @@
 {% set ns.LicenseAssignedToCluster = true %}
 {# License assigned, so reduce available license count by socket number consumed by cluster #}
 {% set NewQuantity = License.Quantity - ns.ClusterSockets %}
-{% do License.update({'Quantity': NewQuantity}) %}
+{% set _ = License.update({'Quantity': NewQuantity}) %}
 {% endif %}{# License.Quantity #}
 {% endfor %}{# License #}
 {% endif %}{# ClusterSettings.DeployHosts == true #}

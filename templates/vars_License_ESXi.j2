@@ -29,7 +29,7 @@
 {% set ns.LicenseAssignedToHost = true %}
 {# License assigned, so reduce available license count by socket number consumed by host #}
 {% set NewQuantity = License.Quantity - HostSockets %}
-{% do License.update({'Quantity': NewQuantity}) %}
+{% set _ = License.update({'Quantity': NewQuantity}) %}
 {% endif %}{# HostSockets #}
 {% endfor %}{# Licenses #}
 {% endfor %}{# Hosts #}
