@@ -156,6 +156,7 @@
         server:   "{{ Common.DNS.Server1.IPv4 }}"
         type:     "PTR"
         protocol: "udp"
+        zone:     203.10.in-addr.arpa.
         record:   "{{ item.value.IPv4.Address | ipaddr('revdns') }}"
         value:    "{{ Nested_Router.Name }}-{{ item.key }}.{{ Common.DNS.Domain }}."
         state:    "{{ LOCAL_RecordState }}"
@@ -231,6 +232,7 @@
         server:   "{{ Common.DNS.Server1.IPv6 }}"
         type:     "PTR"
         protocol: "udp"
+        zone:     0.0.d.f.ipv6.arpa.
         record:   "{{ item.value.IPv6.Address | ipaddr('revdns') }}"
         value:    "{{ Nested_Router.Name }}-{{ item.key }}.{{ Common.DNS.Domain }}."
         state:    "{{ LOCAL_RecordState }}"
@@ -305,6 +307,7 @@
         server:   "{{ Common.DNS.Server1.IPv4 }}"
         type:     "PTR"
         protocol: "udp"
+        zone:     203.10.in-addr.arpa.
         record:   "{{ Nested_vRLI.Address.IPv4.Address | ipaddr('revdns') }}"
         value:    "{{ Nested_vRLI.VMName }}.{{ Common.DNS.Domain }}."
         state:    "{{ LOCAL_RecordState }}"
@@ -378,6 +381,7 @@
         server:   "{{ Common.DNS.Server1.IPv6 }}"
         type:     "PTR"
         protocol: "udp"
+        zone:     0.0.d.f.ipv6.arpa.
         record:   "{{ Nested_vRLI.Address.IPv6.Address | ipaddr('revdns') }}"
         value:    "{{ Nested_vRLI.VMName }}.{{ Common.DNS.Domain }}."
         state:    "{{ LOCAL_RecordState }}"
@@ -457,6 +461,7 @@
         server:   "{{ Common.DNS.Server1.IPv4 }}"
         type:     "PTR"
         protocol: "udp"
+        zone:     203.10.in-addr.arpa.
         record:   "{{ item.value.vmk.vmk0.Address.IPv4.Address | ipaddr('revdns') }}"
         value:    "{{ item.value.VMName }}.{{ Common.DNS.Domain }}."
         state:    "{{ LOCAL_RecordState }}"
@@ -535,6 +540,7 @@
         server:   "{{ Common.DNS.Server1.IPv6 }}"
         type:     "PTR"
         protocol: "udp"
+        zone:     0.0.d.f.ipv6.arpa.
         record:   "{{ item.value.vmk.vmk0.Address.IPv6.Address | ipaddr('revdns') }}"
         value:    "{{ item.value.VMName }}.{{ Common.DNS.Domain }}."
         state:    "{{ LOCAL_RecordState }}"
@@ -610,6 +616,7 @@
         server:   "{{ Common.DNS.Server1.IPv4 }}"
         type:     "PTR"
         protocol: "udp"
+        zone:     203.10.in-addr.arpa.
         record:   "{{ Nested_vCenter.Address.IPv4.Address | ipaddr('revdns') }}"
         value:    "{{ Nested_vCenter.VMName }}.{{ Common.DNS.Domain }}."
         state:    "{{ LOCAL_RecordState }}"
@@ -683,6 +690,7 @@
         server:   "{{ Common.DNS.Server1.IPv6 }}"
         type:     "PTR"
         protocol: "udp"
+        zone:     0.0.d.f.ipv6.arpa.
         record:   "{{ Nested_vCenter.Address.IPv6.Address | ipaddr('revdns') }}"
         value:    "{{ Nested_vCenter.VMName }}.{{ Common.DNS.Domain }}."
         state:    "{{ LOCAL_RecordState }}"
@@ -759,6 +767,7 @@
         server:   "{{ Common.DNS.Server1.IPv4 }}"
         type:     "PTR"
         protocol: "udp"
+        zone:     203.10.in-addr.arpa.
         record:   "{{ item.value.Address.IPv4.Address | ipaddr('revdns') }}"
         value:    "{{ item.value.VMName }}.{{ Common.DNS.Domain }}."
         state:    "{{ LOCAL_RecordState }}"
@@ -833,6 +842,7 @@
         server:   "{{ Common.DNS.Server1.IPv4 }}"
         type:     "PTR"
         protocol: "udp"
+        zone:     203.10.in-addr.arpa.
         record:   "{{ item.Deployment.ManagementIPAddress | ipaddr('revdns') }}"
         value:    "{{ item.Name }}.{{ Common.DNS.Domain }}."
         state:    "{{ LOCAL_RecordState }}"
@@ -910,6 +920,7 @@
         server:   "{{ Common.DNS.Server1.IPv6 }}"
         type:     "PTR"
         protocol: "udp"
+        zone:     0.0.d.f.ipv6.arpa.
         record:   "{{ item.value.Address.IPv6.Address | ipaddr('revdns') }}"
         value:    "{{ item.value.VMName }}.{{ Common.DNS.Domain }}."
         state:    "{{ LOCAL_RecordState }}"
