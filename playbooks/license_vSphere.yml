@@ -157,7 +157,9 @@
     - name: Assign an ESXi license to each deployed ESXi host
       set_fact:
         HostsToLicense: "{{ lookup('template', '{{ Target.TemplateFolder }}/vars_License_ESXi.j2') | from_yaml }}"
-      when: LicenseProducts == True
+      when: 
+        - LicenseProducts == True
+        - (ESXi_Licenses | default([])) | length
 
     - name: DEBUG -- Display ESXi Hosts and assigned Licenses (Pause)
       pause:
@@ -206,6 +208,7 @@
         ClustersToLicense: "{{ lookup('template', '{{ Target.TemplateFolder }}/vars_License_vSAN.j2') | from_yaml }}"
       when:
         - LicenseProducts == True
+        - (vSAN_Licenses | default([])) | length
 
     - name: DEBUG - Display vSAN Clusters and assigned Licenses (Pause)
       pause:
