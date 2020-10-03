@@ -1,0 +1,25 @@
+{
+	"name": "VMware SDDC Lab / JPMC VMware ISV Lab: Debian 9, Python 3.7, Ansible 2.9",
+	"dockerFile": "Dockerfile",
+	"context": "..",
+	"extensions": [
+		"ms-python.python"
+	],
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/bash",
+		"python.pythonPath": "/usr/local/bin/python",
+		"python.linting.enabled": true,
+		"python.linting.pylintEnabled": true,
+		"python.linting.pylintPath": "/usr/local/bin/pylint"
+	},
+
+	// Uncomment the next line if you want to publish any ports.
+	"appPort": [ "60032:22" ],
+
+	// set hostname on running container
+	"runArgs": [ "--hostname", "sddc", "--cap-add=sys_admin", "--privileged" ],
+
+	// Uncomment the next line to run commands after the container is created.
+	// "postCreateCommand": "sudo sh ./sync.sh; sudo sh ./start.sh",
+	"postCreateCommand": "mount -o nolock -t nfs 10.250.0.251:/volume1/ds01/software /workspaces/SDDC.Lab/software/; nohup sh -c /usr/sbin/sshd -D >/dev/null 2>&1 &",
+}

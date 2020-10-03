@@ -1,0 +1,7 @@
+requests
+pyvim
+pyvmomi
+pexpect
+netaddr
+jmespath
+dnspython==1.16.0
